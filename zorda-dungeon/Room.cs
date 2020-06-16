@@ -31,14 +31,7 @@ namespace zorda_dungeon
 
 		public bool checkRoomDirection(RoomDirection roomDir)
 		{
-			if (((int)this.roomDirection & (int)roomDir) > 0)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return ((int)this.roomDirection & (int)roomDir) > 0;
 		}
 
 		public void Draw(SpriteBatch spriteBatch)
