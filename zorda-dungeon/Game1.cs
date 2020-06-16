@@ -15,11 +15,8 @@ namespace zorda_dungeon
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        ContentManager contentManager;
 
-        Texture2D Block;
-
-        DrawableGameComponent bruh;
+        Texture2D block;
         
         public Game1()
         {
@@ -51,11 +48,11 @@ namespace zorda_dungeon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            Block = new Texture2D(spriteBatch.GraphicsDevice, 64, 64);
+            block = new Texture2D(spriteBatch.GraphicsDevice, 64, 64);
 
-            using (var stream = TitleContainer.OpenStream("Statue.png"))
+            using (var stream = TitleContainer.OpenStream("Block.png"))
             {
-                Block = Texture2D.FromStream(this.GraphicsDevice, stream);
+                block = Texture2D.FromStream(this.GraphicsDevice, stream);
             }
 
             // TODO: use this.Content to load your game content here
@@ -94,29 +91,16 @@ namespace zorda_dungeon
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+
             GraphicsDevice.Clear(Color.Black);
+
             spriteBatch.Begin();
-            spriteBatch.Draw(Block, new Rectangle(110, 15, 622, 448), Color.DarkGreen);
-            spriteBatch.Draw(Block, new Rectangle(200, 100, 64, 64), Color.Gray);
-            spriteBatch.Draw(Block, new Rectangle(534, 100, 64, 64), Color.Gray);
-            spriteBatch.Draw(new Texture2D(spriteBatch.GraphicsDevice, 16, 16), new Rectangle(300, 100, 64, 64), Color.DarkGray);
 
-            for (int i = 0; i <= 6; i++)
-            {
-                if (i == 0 || i == 6)
-                {
-                    for (int k = 0; k <= 8; k++)
-                    {
-                        spriteBatch.Draw(Block, new Rectangle(110 + 64 * k, 15 + 64 * i, 64, 64), Color.Green);
-                    }
-                }
-                else
-                {
-                    spriteBatch.Draw(Block, new Rectangle(110,  15 + 64 * i, 64, 64), Color.Green);
-                    spriteBatch.Draw(Block, new Rectangle(622, 15 + 64 * i, 64, 64), Color.Green);
-                }
-            }
+            new Room(spriteBatch, block, (int)RoomDirection.Up, Color.DarkGreen).Draw();
 
+            spriteBatch.Draw(block, new Rectangle(200, 100, 64, 64), Color.Gray);
+            spriteBatch.Draw(block, new Rectangle(534, 100, 64, 64), Color.Gray);
+            
 
 
             spriteBatch.End();
