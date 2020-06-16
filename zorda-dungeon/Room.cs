@@ -14,24 +14,33 @@ namespace zorda_dungeon
 
 	public class Room
 	{
-
-		SpriteBatch spriteBatch;
 		Texture2D block;
-		int roomDirection;
+		RoomDirection roomDirection;
 		Color color;
 
-		// Room constructor: Color, Which sides of room has doors.
-		public Room(SpriteBatch spritebatch, Texture2D block, int roomDirection, Color color)
+		// Room constructor: block texture, room direction, and color.
+		public Room(Texture2D block, RoomDirection roomDirection, Color color)
 		{
-			this.spriteBatch = spritebatch;
 			this.block = block;
 			this.roomDirection = roomDirection;
 			this.color = color;
 		}
 
-		public void Draw()
+		public bool checkRoomDirection(RoomDirection roomDir)
 		{
-			spriteBatch.Draw(block, new Rectangle(110, 15, 622, 448), Color.DarkGreen);
+			if (((int)this.roomDirection & (int)roomDir) > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public void Draw(SpriteBatch spriteBatch)
+		{
+			spriteBatch.Draw(block, new Rectangle(64, -20, 668, 520), Color.DarkGreen);
 
 			for (int i = 0; i <= 6; i++)
 			{
@@ -39,13 +48,26 @@ namespace zorda_dungeon
 				{
 					for (int k = 0; k <= 8; k++)
 					{
+						if (k == 4)
+						{
+							if (i == 0 && checkRoomDirection(RoomDirection.Up)) 
+								continue;
+
+							if (i == 6 && checkRoomDirection(RoomDirection.Down))
+								continue;
+
+						}
 						spriteBatch.Draw(block, new Rectangle(110 + 64 * k, 15 + 64 * i, 64, 64), Color.Green);
 					}
 				}
 				else
 				{
-					spriteBatch.Draw(block, new Rectangle(110, 15 + 64 * i, 64, 64), Color.Green);
-					spriteBatch.Draw(block, new Rectangle(622, 15 + 64 * i, 64, 64), Color.Green);
+					if (!(i == 3 && checkRoomDirection(RoomDirection.Left)))
+						spriteBatch.Draw(block, new Rectangle(110, 15 + 64 * i, 64, 64), Color.Green);
+
+					if (!(i == 3 && checkRoomDirection(RoomDirection.Right)))
+						spriteBatch.Draw(block, new Rectangle(622, 15 + 64 * i, 64, 64), Color.Green);
+
 				}
 			}
 		}

@@ -96,7 +96,7 @@ namespace zorda_dungeon
 
             spriteBatch.Begin();
 
-            new Room(spriteBatch, block, (int)RoomDirection.Up, Color.DarkGreen).Draw();
+            new Room(block, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.DarkGreen).Draw(this.spriteBatch);
 
             spriteBatch.Draw(block, new Rectangle(200, 100, 64, 64), Color.Gray);
             spriteBatch.Draw(block, new Rectangle(534, 100, 64, 64), Color.Gray);
