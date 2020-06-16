@@ -1,3 +1,2 @@
 # zorda-dungeon
-zelda-esque dungeon test \n
-use monogame
+zelda-esque dungeon test.  /n use monogame
