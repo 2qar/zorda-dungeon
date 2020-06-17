@@ -112,7 +112,6 @@ namespace zorda_dungeon
             foreach (Entity E in this.statues)
                 if (this.player.Intersects(E))
                 {
-                    Console.WriteLine("intersecting");
                     this.player.Translate(this.player.velocity * -1);
                 }
 
@@ -130,7 +129,6 @@ namespace zorda_dungeon
                                 {
                                     if (this.player.Intersects(T))
                                     {
-                                        Console.WriteLine("intersecting");
                                         this.player.Translate(this.player.velocity * -1);
                                     }
                                 }
