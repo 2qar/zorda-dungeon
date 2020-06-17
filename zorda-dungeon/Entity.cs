@@ -10,12 +10,27 @@ namespace zorda_dungeon
 	{
 		Texture2D sprite;
 		Texture2D hitbox;
-		Vector2 position;
+		public Vector2 position;
 		public Vector2 velocity;
 		float moveSpeed;
 		Color color;
 
 		//Constructor: Sprite texture, hitbox texture, move speed, start position
+
+		public Entity(Texture2D sprite, Texture2D hitbox, Vector2 startPos)
+		{
+			this.sprite = sprite;
+			this.hitbox = hitbox;
+			this.position = startPos;
+			this.color = Color.White;
+		}
+		public Entity(Texture2D sprite, Texture2D hitbox, Vector2 startPos, Color color)
+		{
+			this.sprite = sprite;
+			this.hitbox = hitbox;
+			this.position = startPos;
+			this.color = color;
+		}
 		public Entity(Texture2D sprite, Texture2D hitbox, float moveSpeed, Vector2 startPos)
 		{
 			this.sprite = sprite;
@@ -24,7 +39,6 @@ namespace zorda_dungeon
 			this.position = startPos;
 			this.color = Color.White;
 		}
-
 		public Entity(Texture2D sprite, Texture2D hitbox, float moveSpeed, Vector2 startPos, Color color)
 		{
 			this.sprite = sprite;
@@ -38,8 +52,8 @@ namespace zorda_dungeon
 		public void Draw(SpriteBatch spriteBatch)
 		{
 
-			spriteBatch.Draw(sprite, new Rectangle((int)position.X, (int)position.Y, 64, 64), this.color);
-			spriteBatch.Draw(hitbox, new Rectangle((int)position.X + sprite.Bounds.Left, (int)position.Y + sprite.Bounds.Top, sprite.Bounds.Right, sprite.Bounds.Bottom), Color.FromNonPremultiplied(150, 0, 0, 50));
+			spriteBatch.Draw(sprite, new Rectangle((int)position.X, (int)position.Y, sprite.Bounds.Width, sprite.Bounds.Height), this.color);
+			spriteBatch.Draw(hitbox, new Rectangle((int)position.X, (int)position.Y, sprite.Bounds.Width, sprite.Bounds.Height), Color.FromNonPremultiplied(150, 0, 0, 50));
 
 		}
 
@@ -53,16 +67,12 @@ namespace zorda_dungeon
 
 		public bool Intersects(Entity entity)
 		{
-			if (this.hitbox.Bounds.Intersects(entity.hitbox.Bounds)) 
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
+			Rectangle ourHitbox = new Rectangle((int)this.position.X, (int)this.position.Y, this.sprite.Bounds.Width, this.sprite.Bounds.Height);
+			Rectangle theirHitbox = new Rectangle((int)entity.position.X, (int)entity.position.Y, entity.sprite.Bounds.Width, entity.sprite.Bounds.Height);
 
+			return (ourHitbox.Intersects(theirHitbox));
+			
+		}
 
 	}
 }

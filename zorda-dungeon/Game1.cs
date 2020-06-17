@@ -21,6 +21,7 @@ namespace zorda_dungeon
         Player player;
         Texture2D floorSpr;
 
+        Room[][] rooms;
         Entity[] statues;
         
         public Game1()
@@ -38,6 +39,10 @@ namespace zorda_dungeon
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            rooms = new Room[5][];
+            for (int i = 0; i < rooms.Length; i++)
+                rooms[i] = new Room[5];
 
             statues = new Entity[2];
 
@@ -68,10 +73,14 @@ namespace zorda_dungeon
             {
                 playerSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
             }
+
+            this.rooms[2][2] = new Room(blockSpr, floorSpr, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.DarkGreen);
+
+
             this.player = new Player(playerSpr, blockSpr, 2f, new Vector2(368f, 208f));
 
-            this.statues[0] = new Entity(blockSpr, blockSpr, 0f, new Vector2(200, 100), Color.Gray);
-            this.statues[1] = new Entity(blockSpr, blockSpr, 0f, new Vector2(534, 100), Color.Gray);
+            this.statues[0] = new Entity(blockSpr, blockSpr, new Vector2(200, 100), Color.Gray);
+            this.statues[1] = new Entity(blockSpr, blockSpr, new Vector2(534, 100), Color.Gray);
 
             // TODO: use this.Content to load your game content here
 
@@ -104,8 +113,34 @@ namespace zorda_dungeon
                 if (this.player.Intersects(E))
                 {
                     Console.WriteLine("intersecting");
-                    //this.player.Translate(this.player.velocity * -1);
+                    this.player.Translate(this.player.velocity * -1);
                 }
+
+            foreach (Room[] R in this.rooms)
+            {
+                foreach (Room K in R)
+                {
+                    if (K != null)
+                    {
+                        foreach (Entity[] E in K.walls)
+                        {
+                            foreach (Entity T in E)
+                            {
+                                if (T != null)
+                                {
+                                    if (this.player.Intersects(T))
+                                    {
+                                        Console.WriteLine("intersecting");
+                                        this.player.Translate(this.player.velocity * -1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
 
             // TODO: Add your update logic here
 
@@ -138,7 +173,15 @@ namespace zorda_dungeon
 
             spriteBatch.Begin();
 
-            new Room(blockSpr, floorSpr, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.DarkGreen).Draw(this.spriteBatch);
+            foreach (Room[] R in this.rooms) 
+            {
+                foreach (Room K in R)
+                {
+                    if (K != null)
+                        K.Draw(spriteBatch);
+                }
+            }
+            
 
             foreach (Entity E in this.statues)
             {

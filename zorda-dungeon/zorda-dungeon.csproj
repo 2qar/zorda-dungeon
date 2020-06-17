@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\DesktopGL\AnyCPU\Debug\Block.png" />
+    <Content Include="bin\DesktopGL\AnyCPU\Debug\CyclopsPlayer SprSht.png" />
     <Content Include="bin\DesktopGL\AnyCPU\Debug\CyclopsPlayer.png" />
     <Content Include="bin\DesktopGL\AnyCPU\Debug\Floor.png" />
     <Content Include="bin\DesktopGL\AnyCPU\Debug\MonoGame.Framework.dll" />
