@@ -7,18 +7,23 @@ namespace zorda_dungeon
 
 	public class Entity
 	{
-		SpriteBatch spriteBatch;
 		Texture2D sprite;
 		Vector2 position;
 		float moveSpeed;
 		Rectangle sourceRectangle;
 
 		//Constructor: Sprite texture, move speed, 
-		public Entity(SpriteBatch spriteBatch, Texture2D sprite, float moveSpeed)
+		public Entity(Texture2D sprite, float moveSpeed)
 		{
-			this.spriteBatch = spriteBatch;
 			this.sprite = sprite;
 			this.moveSpeed = moveSpeed;
+		}
+
+		public void Draw(SpriteBatch spriteBatch)
+		{
+			spriteBatch.Draw(sprite, new Rectangle(368, 208, 64, 64), Color.White);
+
+
 		}
 
 

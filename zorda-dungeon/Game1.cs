@@ -16,7 +16,10 @@ namespace zorda_dungeon
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D block;
+        Texture2D blockSpr;
+        Texture2D playerSpr;
+        Player player;
+        Texture2D floorSpr;
         
         public Game1()
         {
@@ -48,12 +51,21 @@ namespace zorda_dungeon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            block = new Texture2D(spriteBatch.GraphicsDevice, 64, 64);
+            blockSpr = new Texture2D(spriteBatch.GraphicsDevice, 64, 64);
 
             using (var stream = TitleContainer.OpenStream("Block.png"))
             {
-                block = Texture2D.FromStream(this.GraphicsDevice, stream);
+                blockSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
             }
+            using (var stream = TitleContainer.OpenStream("Floor.png"))
+            {
+                floorSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
+            }
+            using (var stream = TitleContainer.OpenStream("CyclopsPlayer.png"))
+            {
+                playerSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
+            }
+            this.player = new Player(playerSpr, 0.5f);
 
             // TODO: use this.Content to load your game content here
 
@@ -96,12 +108,12 @@ namespace zorda_dungeon
 
             spriteBatch.Begin();
 
-            new Room(block, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.DarkGreen).Draw(this.spriteBatch);
+            new Room(blockSpr, floorSpr, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.DarkGreen).Draw(this.spriteBatch);
 
-            spriteBatch.Draw(block, new Rectangle(200, 100, 64, 64), Color.Gray);
-            spriteBatch.Draw(block, new Rectangle(534, 100, 64, 64), Color.Gray);
-            
+            spriteBatch.Draw(blockSpr, new Rectangle(200, 100, 64, 64), Color.Gray);
+            spriteBatch.Draw(blockSpr, new Rectangle(534, 100, 64, 64), Color.Gray);
 
+            player.Draw(spriteBatch);
 
             spriteBatch.End();
 
