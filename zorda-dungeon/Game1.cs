@@ -65,7 +65,7 @@ namespace zorda_dungeon
             {
                 playerSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
             }
-            this.player = new Player(playerSpr, 0.5f);
+            this.player = new Player(playerSpr, 5f, new Vector2(368f, 208f));
 
             // TODO: use this.Content to load your game content here
 
@@ -92,9 +92,26 @@ namespace zorda_dungeon
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            playerMovement();
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+        }
+
+        void playerMovement()
+        {
+            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0)
+                player.Translate(new Vector2(0f, -1f));
+
+            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < 0)
+                player.Translate(new Vector2(0f, 1f));
+
+            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
+                player.Translate(new Vector2(1f, 0f));
+
+            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < 0)
+                player.Translate(new Vector2(-1f, 0f));
         }
 
         /// <summary>

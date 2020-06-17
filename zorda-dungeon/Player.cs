@@ -9,7 +9,7 @@ namespace zorda_dungeon
 	public class Player : Entity
 	{
 
-		public Player(Texture2D sprite, float moveSpeed) : base(sprite, moveSpeed)
+		public Player(Texture2D sprite, float moveSpeed, Vector2 startPos) : base(sprite, moveSpeed, startPos)
 		{
 			
 		}
