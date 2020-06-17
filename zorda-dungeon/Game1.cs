@@ -20,6 +20,8 @@ namespace zorda_dungeon
         Texture2D playerSpr;
         Player player;
         Texture2D floorSpr;
+
+        Entity[] statues;
         
         public Game1()
         {
@@ -37,6 +39,7 @@ namespace zorda_dungeon
         {
             // TODO: Add your initialization logic here
 
+            statues = new Entity[2];
 
             base.Initialize();
         }
@@ -65,7 +68,10 @@ namespace zorda_dungeon
             {
                 playerSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
             }
-            this.player = new Player(playerSpr, 5f, new Vector2(368f, 208f));
+            this.player = new Player(playerSpr, blockSpr, 2f, new Vector2(368f, 208f));
+
+            this.statues[0] = new Entity(blockSpr, blockSpr, 0f, new Vector2(200, 100), Color.Gray);
+            this.statues[1] = new Entity(blockSpr, blockSpr, 0f, new Vector2(534, 100), Color.Gray);
 
             // TODO: use this.Content to load your game content here
 
@@ -93,6 +99,13 @@ namespace zorda_dungeon
                 Exit();
 
             playerMovement();
+            
+            foreach (Entity E in this.statues)
+                if (this.player.Intersects(E))
+                {
+                    Console.WriteLine("intersecting");
+                    //this.player.Translate(this.player.velocity * -1);
+                }
 
             // TODO: Add your update logic here
 
@@ -101,16 +114,16 @@ namespace zorda_dungeon
 
         void playerMovement()
         {
-            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y > 0)
+            if (GamePad.GetState(PlayerIndex.One).DPad.Up == ButtonState.Pressed)
                 player.Translate(new Vector2(0f, -1f));
 
-            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y < 0)
+            else if (GamePad.GetState(PlayerIndex.One).DPad.Down == ButtonState.Pressed)
                 player.Translate(new Vector2(0f, 1f));
 
-            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
+            else if (GamePad.GetState(PlayerIndex.One).DPad.Right == ButtonState.Pressed)
                 player.Translate(new Vector2(1f, 0f));
 
-            if (GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X < 0)
+            else if (GamePad.GetState(PlayerIndex.One).DPad.Left == ButtonState.Pressed)
                 player.Translate(new Vector2(-1f, 0f));
         }
 
@@ -127,8 +140,10 @@ namespace zorda_dungeon
 
             new Room(blockSpr, floorSpr, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.DarkGreen).Draw(this.spriteBatch);
 
-            spriteBatch.Draw(blockSpr, new Rectangle(200, 100, 64, 64), Color.Gray);
-            spriteBatch.Draw(blockSpr, new Rectangle(534, 100, 64, 64), Color.Gray);
+            foreach (Entity E in this.statues)
+            {
+                E.Draw(this.spriteBatch);
+            }
 
             player.Draw(spriteBatch);
 

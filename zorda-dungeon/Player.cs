@@ -9,9 +9,14 @@ namespace zorda_dungeon
 	public class Player : Entity
 	{
 
-		public Player(Texture2D sprite, float moveSpeed, Vector2 startPos) : base(sprite, moveSpeed, startPos)
+		public Player(Texture2D sprite, Texture2D hitbox, float moveSpeed, Vector2 startPos) : base(sprite, hitbox, moveSpeed, startPos)
 		{
-			
+
+		}
+
+		public void Magic()
+		{
+
 		}
 	}
 
