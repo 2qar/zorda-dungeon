@@ -35,8 +35,8 @@ namespace zorda_dungeon
 			this.wallColor.B += 100;
 
 			walls = new Entity[11][];
-			for (int i = 0; i < walls.Length; i++)
-				walls[i] = new Entity[9];
+			for (int i = 0; i < this.walls.Length; i++)
+				this.walls[i] = new Entity[9];
 
 		}
 
@@ -69,43 +69,43 @@ namespace zorda_dungeon
 							if (i == 0 && checkRoomDirection(RoomDirection.Up))
 							{
 								walls[k][i] = new Door(this.blockSpr, this.blockSpr, new Vector2(366, 15 - 64), RoomDirection.Up);
-								spriteBatch.Draw(floorSpr, new Rectangle(366, 15, 64, 64), floorColor);
+								spriteBatch.Draw(this.floorSpr, new Rectangle(366, 15, 64, 64), this.floorColor);
 								continue;
 							}
 							if (i == 6 && checkRoomDirection(RoomDirection.Down))
 							{
 								walls[k][i] = new Door(this.blockSpr, this.blockSpr, new Vector2(366, 399 + 64), RoomDirection.Down);
-								spriteBatch.Draw(floorSpr, new Rectangle(366, 399, 64, 64), floorColor);
+								spriteBatch.Draw(this.floorSpr, new Rectangle(366, 399, 64, 64), this.floorColor);
 								continue;
 							}
 						}
-						walls[k][i] = new Entity(this.blockSpr, this.blockSpr, new Vector2(110 + 64 * k, 15 + 64 * i), wallColor);
+						walls[k][i] = new Entity(this.blockSpr, this.blockSpr, new Vector2(110 + 64 * k, 15 + 64 * i), this.wallColor);
 						walls[k][i].Draw(spriteBatch);
 					}
 					else
 					{
-						spriteBatch.Draw(floorSpr, new Rectangle(110 + 64 * k, 15 + 64 * i, 64, 64), floorColor);
+						spriteBatch.Draw(this.floorSpr, new Rectangle(110 + 64 * k, 15 + 64 * i, 64, 64), this.floorColor);
 
 						if (!(i == 3 && checkRoomDirection(RoomDirection.Left)))
 						{
-							walls[1][i] = new Entity(this.blockSpr, this.blockSpr, new Vector2(110, 15 + 64 * i), wallColor);
+							walls[1][i] = new Entity(this.blockSpr, this.blockSpr, new Vector2(110, 15 + 64 * i), this.wallColor);
 							walls[1][i].Draw(spriteBatch);
 						}
 						else
 						{
 							walls[0][i] = new Door(this.blockSpr, this.blockSpr, new Vector2(44, 15 + 64 * i), RoomDirection.Left);
-							spriteBatch.Draw(floorSpr, new Rectangle(110, 207, 64, 64), floorColor);
+							spriteBatch.Draw(this.floorSpr, new Rectangle(110, 207, 64, 64), floorColor);
 						}
 
 						if (!(i == 3 && checkRoomDirection(RoomDirection.Right)))
 						{
-							walls[9][i] = new Entity(this.blockSpr, this.blockSpr, new Vector2(622, 15 + 64 * i), wallColor);
+							walls[9][i] = new Entity(this.blockSpr, this.blockSpr, new Vector2(622, 15 + 64 * i), this.wallColor);
 							walls[9][i].Draw(spriteBatch);
 						}
 						else
 						{
 							walls[10][i] = new Door(this.blockSpr, this.blockSpr, new Vector2(686, 15 + 64 * i), RoomDirection.Right);
-							spriteBatch.Draw(floorSpr, new Rectangle(622, 207, 64, 64), floorColor);
+							spriteBatch.Draw(this.floorSpr, new Rectangle(622, 207, 64, 64), this.floorColor);
 						}
 					}
 				}

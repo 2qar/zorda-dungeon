@@ -43,10 +43,10 @@ namespace zorda_dungeon
             // TODO: Add your initialization logic here
 
             rooms = new Room[5][];
-            for (int i = 0; i < rooms.Length; i++)
-                rooms[i] = new Room[5];
+            for (int i = 0; i < this.rooms.Length; i++)
+                this.rooms[i] = new Room[5];
 
-            statues = new Entity[2];
+            this.statues = new Entity[2];
 
             base.Initialize();
         }
@@ -60,28 +60,28 @@ namespace zorda_dungeon
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
-            blockSpr = new Texture2D(spriteBatch.GraphicsDevice, 64, 64);
+
+            this.blockSpr = new Texture2D(spriteBatch.GraphicsDevice, 64, 64);
 
             using (var stream = TitleContainer.OpenStream("Block.png"))
             {
-                blockSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
+                this.blockSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
             }
             using (var stream = TitleContainer.OpenStream("Floor.png"))
             {
-                floorSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
+                this.floorSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
             }
             using (var stream = TitleContainer.OpenStream("CyclopsPlayer.png"))
             {
-                playerSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
+                this.playerSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
             }
 
-            this.rooms[2][2] = new Room(blockSpr, floorSpr, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.Gainsboro);
-            this.rooms[2][3] = new Room(blockSpr, floorSpr, RoomDirection.Up | RoomDirection.Down, Color.DarkRed);
+            this.rooms[2][2] = new Room(this.blockSpr, this.floorSpr, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.Gainsboro);
+            this.rooms[2][3] = new Room(this.blockSpr, this.floorSpr, RoomDirection.Up | RoomDirection.Down, Color.DarkRed);
 
-            setRoom = rooms[2][2];
-            setRoom.markActive(true);
-            foreach (Entity[] E in setRoom.walls)
+            this.setRoom = this.rooms[2][2];
+            this.setRoom.markActive(true);
+            foreach (Entity[] E in this.setRoom.walls)
             {
                 foreach (Entity W in E)
                 {
@@ -99,8 +99,8 @@ namespace zorda_dungeon
             player.active = true;
             
 
-            this.statues[0] = new Entity(blockSpr, blockSpr, new Vector2(200, 100), Color.Gray);
-            this.statues[1] = new Entity(blockSpr, blockSpr, new Vector2(534, 100), Color.Gray);
+            this.statues[0] = new Entity(this.blockSpr, this.blockSpr, new Vector2(200, 100), Color.Gray);
+            this.statues[1] = new Entity(this.blockSpr, this.blockSpr, new Vector2(534, 100), Color.Gray);
 
             // TODO: use this.Content to load your game content here
 
@@ -186,9 +186,9 @@ namespace zorda_dungeon
                                                 {
                                                     ExitingAnimation(D.roomDir);
                                                     this.player.position = new Vector2(374f, 399f);
-                                                    setRoom.markActive(false);
-                                                    setRoom = rooms[2][2];
-                                                    setRoom.markActive(true);
+                                                    this.setRoom.markActive(false);
+                                                    this.setRoom = rooms[2][2];
+                                                    this.setRoom.markActive(true);
                                                     EnteringAnimation(D.roomDir);
                                                 }
                                                 break;
@@ -200,9 +200,9 @@ namespace zorda_dungeon
                                                 {
                                                     ExitingAnimation(D.roomDir);
                                                     this.player.position = new Vector2(374f, 25f);
-                                                    setRoom.markActive(false);
-                                                    setRoom = rooms[2][3];
-                                                    setRoom.markActive(true);
+                                                    this.setRoom.markActive(false);
+                                                    this.setRoom = rooms[2][3];
+                                                    this.setRoom.markActive(true);
                                                     EnteringAnimation(D.roomDir);
                                                 }
                                                 break;
@@ -241,7 +241,7 @@ namespace zorda_dungeon
 
             spriteBatch.Begin();
 
-            setRoom.Draw(spriteBatch);
+            this.setRoom.Draw(spriteBatch);
             
 
             foreach (Entity E in this.statues)
@@ -249,7 +249,7 @@ namespace zorda_dungeon
                 E.Draw(this.spriteBatch);
             }
 
-            player.Draw(spriteBatch);
+            this.player.Draw(spriteBatch);
 
             spriteBatch.End();
 
