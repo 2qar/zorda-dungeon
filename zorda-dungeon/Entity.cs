@@ -12,11 +12,16 @@ namespace zorda_dungeon
 		Texture2D hitbox;
 		public Vector2 position;
 		public Vector2 velocity;
-		float moveSpeed;
-		Color color;
+		public float moveSpeed;
+		public Color color;
+		public Boolean active;
 
 		//Constructor: Sprite texture, hitbox texture, move speed, start position
+		
+		public Entity()
+		{
 
+		}
 		public Entity(Texture2D sprite, Texture2D hitbox, Vector2 startPos)
 		{
 			this.sprite = sprite;
@@ -53,7 +58,7 @@ namespace zorda_dungeon
 		{
 
 			spriteBatch.Draw(sprite, new Rectangle((int)position.X, (int)position.Y, sprite.Bounds.Width, sprite.Bounds.Height), this.color);
-			spriteBatch.Draw(hitbox, new Rectangle((int)position.X, (int)position.Y, sprite.Bounds.Width, sprite.Bounds.Height), Color.FromNonPremultiplied(150, 0, 0, 50));
+			//spriteBatch.Draw(hitbox, new Rectangle((int)position.X, (int)position.Y, sprite.Bounds.Width, sprite.Bounds.Height), Color.FromNonPremultiplied(150, 0, 0, 50));
 
 		}
 
@@ -67,6 +72,9 @@ namespace zorda_dungeon
 
 		public bool Intersects(Entity entity)
 		{
+			if (!(entity.active))
+				return false;
+
 			Rectangle ourHitbox = new Rectangle((int)this.position.X, (int)this.position.Y, this.sprite.Bounds.Width, this.sprite.Bounds.Height);
 			Rectangle theirHitbox = new Rectangle((int)entity.position.X, (int)entity.position.Y, entity.sprite.Bounds.Width, entity.sprite.Bounds.Height);
 

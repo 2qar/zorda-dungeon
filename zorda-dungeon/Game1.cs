@@ -22,6 +22,8 @@ namespace zorda_dungeon
         Texture2D floorSpr;
 
         Room[][] rooms;
+        Room setRoom;
+
         Entity[] statues;
         
         public Game1()
@@ -74,10 +76,28 @@ namespace zorda_dungeon
                 playerSpr = Texture2D.FromStream(this.GraphicsDevice, stream);
             }
 
-            this.rooms[2][2] = new Room(blockSpr, floorSpr, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.DarkGreen);
+            this.rooms[2][2] = new Room(blockSpr, floorSpr, RoomDirection.Up | RoomDirection.Left | RoomDirection.Right | RoomDirection.Down, Color.Gainsboro);
+            this.rooms[2][3] = new Room(blockSpr, floorSpr, RoomDirection.Up | RoomDirection.Down, Color.DarkRed);
+
+            setRoom = rooms[2][2];
+            setRoom.markActive(true);
+            foreach (Entity[] E in setRoom.walls)
+            {
+                foreach (Entity W in E)
+                {
+                    if (W != null)
+                    {
+                        Console.WriteLine(W.active);
+                    }
+                }
+            }
 
 
-            this.player = new Player(playerSpr, blockSpr, 2f, new Vector2(368f, 208f));
+
+            this.player = new Player(playerSpr, blockSpr, 2f, new Vector2(374f, 208f));
+
+            player.active = true;
+            
 
             this.statues[0] = new Entity(blockSpr, blockSpr, new Vector2(200, 100), Color.Gray);
             this.statues[1] = new Entity(blockSpr, blockSpr, new Vector2(534, 100), Color.Gray);
@@ -107,7 +127,7 @@ namespace zorda_dungeon
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            playerMovement();
+            PlayerMovement();
             
             foreach (Entity E in this.statues)
                 if (this.player.Intersects(E))
@@ -115,29 +135,7 @@ namespace zorda_dungeon
                     this.player.Translate(this.player.velocity * -1);
                 }
 
-            foreach (Room[] R in this.rooms)
-            {
-                foreach (Room K in R)
-                {
-                    if (K != null)
-                    {
-                        foreach (Entity[] E in K.walls)
-                        {
-                            foreach (Entity T in E)
-                            {
-                                if (T != null)
-                                {
-                                    if (this.player.Intersects(T))
-                                    {
-                                        this.player.Translate(this.player.velocity * -1);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
+            CollisionDetection();
 
 
             // TODO: Add your update logic here
@@ -145,7 +143,7 @@ namespace zorda_dungeon
             base.Update(gameTime);
         }
 
-        void playerMovement()
+        void PlayerMovement()
         {
             if (GamePad.GetState(PlayerIndex.One).DPad.Up == ButtonState.Pressed)
                 player.Translate(new Vector2(0f, -1f));
@@ -160,6 +158,78 @@ namespace zorda_dungeon
                 player.Translate(new Vector2(-1f, 0f));
         }
 
+        void CollisionDetection()
+        {
+            foreach (Room[] R in this.rooms)
+            {
+                foreach (Room K in R)
+                {
+                    if (K != null)
+                    {
+                        foreach (Entity[] E in K.walls)
+                        {
+                            foreach (Entity T in E)
+                            {
+                                if (T != null)
+                                {
+                                    if (T.GetType() == new Door().GetType())
+                                    {
+                                        Door D = (Door)T;
+
+                                        switch (D.roomDir)
+                                        {
+                                            case RoomDirection.Left:
+
+                                                break;
+                                            case RoomDirection.Up:
+                                                if (this.player.Intersects(D))
+                                                {
+                                                    ExitingAnimation(D.roomDir);
+                                                    this.player.position = new Vector2(374f, 399f);
+                                                    setRoom.markActive(false);
+                                                    setRoom = rooms[2][2];
+                                                    setRoom.markActive(true);
+                                                    EnteringAnimation(D.roomDir);
+                                                }
+                                                break;
+                                            case RoomDirection.Right:
+
+                                                break;
+                                            case RoomDirection.Down:
+                                                if (this.player.Intersects(D))
+                                                {
+                                                    ExitingAnimation(D.roomDir);
+                                                    this.player.position = new Vector2(374f, 25f);
+                                                    setRoom.markActive(false);
+                                                    setRoom = rooms[2][3];
+                                                    setRoom.markActive(true);
+                                                    EnteringAnimation(D.roomDir);
+                                                }
+                                                break;
+
+                                        }
+                                    }
+
+                                    if (this.player.Intersects(T))
+                                        this.player.Translate(this.player.velocity * -1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        void EnteringAnimation(RoomDirection roomDir)
+        {
+
+        }
+
+        void ExitingAnimation(RoomDirection roomDir)
+        {
+
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -171,14 +241,7 @@ namespace zorda_dungeon
 
             spriteBatch.Begin();
 
-            foreach (Room[] R in this.rooms) 
-            {
-                foreach (Room K in R)
-                {
-                    if (K != null)
-                        K.Draw(spriteBatch);
-                }
-            }
+            setRoom.Draw(spriteBatch);
             
 
             foreach (Entity E in this.statues)
